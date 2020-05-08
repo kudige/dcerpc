@@ -209,7 +209,7 @@ INTERNAL void rpc__schnauth_cn_vfy_srvr_resp (
         unsigned32                      * /*st*/
     );
 
-INTERNAL const rpc_cn_auth_epv_t rpc_g_schnauth_cn_epv =
+EXTERNAL rpc_cn_auth_epv_t rpc_g_schnauth_cn_epv =
 {
     .three_way      = rpc__schnauth_cn_three_way,
     .context_valid  = rpc__schnauth_cn_context_valid,
