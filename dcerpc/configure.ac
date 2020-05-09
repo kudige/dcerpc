@@ -475,7 +475,7 @@ AC_SUBST(SCHANNEL_LIBS)
 
 tmp_LDFLAGS="$LDFLAGS"
 LDFLAGS="$SCHANNEL_LDFLAGS $LDFLAGS"
-AC_CHECK_LIB(schannel, schn_wrap, [SCHANNEL_LIBS="-lschannel -lssl -lcrypto"], [], [-lssl -lcrypto])
+AC_CHECK_LIB(schannel, schn_wrap, [SCHANNEL_LIBS="-lschannel -lssl -lcrypto -lpthread -ldl"], [], [-lssl -lcrypto -lpthread -ldl])
 LDFLAGS="$tmp_LDFLAGS"
 
 #####################################################################
