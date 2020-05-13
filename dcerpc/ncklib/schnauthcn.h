@@ -127,11 +127,17 @@ typedef struct rpc_cn_schnauth_tlr
     unsigned8 seq_number[8];
     unsigned8 digest[8];
     unsigned8 nonce[8];
+#ifdef AES_ENABLED
+    unsigned8 reserved[24];
+#endif        
 
 } rpc_cn_schnauth_tlr_t, *rpc_cn_schnauth_tlr_p_t;
 
-#define RPC_CN_PKT_SIZEOF_SCHNAUTH_TLR  32
-
+#ifdef AES_ENABLED
+#define RPC_CN_PKT_SIZEOF_SCHNAUTH_TLR 56
+#else
+#define RPC_CN_PKT_SIZEOF_SCHNAUTH_TLR 32
+#endif
 EXTERNAL rpc_cn_auth_epv_t rpc_g_schnauth_cn_epv;
 
 #endif /* _SCHNAUTHCN_H */

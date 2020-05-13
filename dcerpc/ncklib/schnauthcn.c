@@ -1206,7 +1206,9 @@ INTERNAL void rpc__schnauth_cn_wrap_pdu
     memcpy(schn_tlr->digest, tail.digest, 8);
     memcpy(schn_tlr->seq_number, tail.seq_number, 8);
     memcpy(schn_tlr->nonce, tail.nonce, 8);
-
+#ifdef AES_ENABLED
+    memcpy(schn_tlr->reserved, tail.reserved, 24);
+#endif
     schn_free_blob(&output_token);
 
     *st = status;
