@@ -202,6 +202,9 @@ dcethread__init_exceptions(void)
 void
 dcethread__frame_push(dcethread_frame* frame)
 {
+    /* Ensure thread system is initialized */
+    dcethread__init();
+
     dcethread_frame* cur = pthread_getspecific(frame_key);
     void *pframe = (void*)(struct _dcethread_frame*) frame;
 
