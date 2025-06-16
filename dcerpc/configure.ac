@@ -230,7 +230,7 @@ saved_LIBS="$LIBS"
 LIBS="$LIBS $LIB_nsl"
 AC_CHECK_FUNCS(gethostbyname_r)
 if test "$ac_cv_func_gethostbyname_r" = "yes"; then
-AC_CACHE_CHECK(number of arcuments to gethostbyname_r, xad_cv_gethostbyname_r_args, [
+AC_CACHE_CHECK(number of arguments to gethostbyname_r, xad_cv_gethostbyname_r_args, [
 xad_cv_gethostbyname_r_args=
    AC_COMPILE_IFELSE([
        AC_LANG_SOURCE([[#include <netdb.h>]],
@@ -648,7 +648,7 @@ AC_CHECK_FUNCS(setpgrp)
 if test "$ac_cv_func_setpgrp" = "yes"; then
 	AC_CACHE_CHECK(whether setpgrp() takes 2 arguments, rpcd_cv_setpgrp_args, [
 		AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <unistd.h>]], [[setpgrp(0, 0);]])],[rpcd_cv_setpgrp_args=2],[rpcd_cv_setpgrp_args=0])])
-	AC_DEFINE_UNQUOTED(SETPGRP_ARGS, $rpcd_cv_setpgrp_args, Number of arguments to setgrp())
+        AC_DEFINE_UNQUOTED(SETPGRP_ARGS, $rpcd_cv_setpgrp_args, Number of arguments to setpgrp())
 fi
 
 #####################################################################
