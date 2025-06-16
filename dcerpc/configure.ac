@@ -78,8 +78,8 @@
 
 dnl Process this file with autoconf to produce a configure script.
 
-AC_PREREQ([2.13])
-AC_INIT([DCE RPC], [1.1.0.7])
+AC_PREREQ([2.71])
+AC_INIT([DCE RPC],[1.1.0.7])
 AC_CONFIG_AUX_DIR([build])
 AC_CONFIG_MACRO_DIR([m4])
 AC_CANONICAL_TARGET
@@ -117,16 +117,16 @@ LT_INIT([disable-static pic-only dlopen])
 # AC_PREFIX_DEFAULT(/opt/dcerpc)
 AC_PREFIX_DEFAULT(/usr/local)
 AC_CONFIG_SRCDIR([uuid/uuid.c])
-AC_CONFIG_HEADER([include/config.h])
+AC_CONFIG_HEADERS([include/config.h])
 
-AM_DISABLE_STATIC
+AC_DISABLE_STATIC([])
 
 dnl Checks for programs.
 AC_PROG_CC
 AC_PROG_CPP
 AC_PROG_CXX
 AC_PROG_AWK
-AM_PROG_LIBTOOL
+LT_INIT
 AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_SED
@@ -230,13 +230,17 @@ saved_LIBS="$LIBS"
 LIBS="$LIBS $LIB_nsl"
 AC_CHECK_FUNCS(gethostbyname_r)
 if test "$ac_cv_func_gethostbyname_r" = "yes"; then
-AC_CACHE_CHECK(number of arcuments to gethostbyname_r, xad_cv_gethostbyname_r_args, [
+AC_CACHE_CHECK(number of arguments to gethostbyname_r, xad_cv_gethostbyname_r_args, [
 xad_cv_gethostbyname_r_args=
-   AC_TRY_COMPILE([
-#include <netdb.h>], [gethostbyname_r(0, 0, 0, 0, 0, 0);], [xad_cv_gethostbyname_r_args=6], [
-         AC_TRY_COMPILE([
-		#include <netdb.h>],
-		[gethostbyname_r(0, 0, 0, 0, 0);], [xad_cv_gethostbyname_r_args=5], [xad_cv_gethostbyname_r_args=3])]) ])
+   AC_COMPILE_IFELSE([
+       AC_LANG_SOURCE([[#include <netdb.h>]],
+                      [[gethostbyname_r(0, 0, 0, 0, 0, 0);]])],
+       [xad_cv_gethostbyname_r_args=6],[
+           AC_COMPILE_IFELSE([
+               AC_LANG_SOURCE([[#include <netdb.h>]],
+                              [[gethostbyname_r(0, 0, 0, 0, 0);]])],
+               [xad_cv_gethostbyname_r_args=5],
+               [xad_cv_gethostbyname_r_args=3])])])
 fi
 AC_DEFINE_UNQUOTED(GETHOSTBYNAME_R_ARGS, $xad_cv_gethostbyname_r_args, Number of arguments to gethostbyname_r)
 LIBS="$saved_LIBS"
@@ -287,12 +291,10 @@ AC_MSG_CHECKING(pthread library and requirements)
 AC_MSG_RESULT()
 
 AC_ARG_WITH(pthread-ext-dir,
-	AC_HELP_STRING([--with-pthread-ext-dir=DIR],
-		       [base directory of pthread extension library]))
+	AS_HELP_STRING([--with-pthread-ext-dir=DIR],[base directory of pthread extension library]))
 
 AC_ARG_WITH(pthread-ext-libdir,
-	AC_HELP_STRING([--with-pthread-ext-libdir=DIR],
-		       [directory of pthread extension library (defaults to --with-pthread-ext-dir/lib)]))
+	AS_HELP_STRING([--with-pthread-ext-libdir=DIR],[directory of pthread extension library (defaults to --with-pthread-ext-dir/lib)]))
 
 if test -n "$with_pthread_ext_dir"; then
   CPPFLAGS="$CPPFLAGS -I$with_pthread_ext_dir/include"
@@ -307,8 +309,7 @@ if test -n "$with_pthread_ext_libdir"; then
 fi
 
 AC_ARG_WITH(pthread-ext-rpath,
-	AC_HELP_STRING([--with-pthread-ext-rpath=DIR],
-		[directory where the pthread extension will be installed at runtime (defaults to --with-pthread-ext-libdir value)]),
+	AS_HELP_STRING([--with-pthread-ext-rpath=DIR],[directory where the pthread extension will be installed at runtime (defaults to --with-pthread-ext-libdir value)]),
     [pthread_ext_rpath="$withval"],
     [pthread_ext_rpath="$with_pthread_ext_libdir"])
 
@@ -390,7 +391,7 @@ fi
 
 dnl If using GCC, we need to add -x c-header to force it to treat idl files
 dnl as C headers; otherwise it tries to do something wierd...
-if test "x${ac_cv_prog_gcc}" = "xyes" ; then
+if test "x${ac_cv_c_compiler_gnu}" = "xyes" ; then
 	IDL_CPP="$CPP -x c-header"
 else
 	IDL_CPP="$CPP"
@@ -420,7 +421,7 @@ AC_SUBST(IDL_CC)
 
 AC_ARG_WITH(
 	gssapi-dir,
-	AC_HELP_STRING([--with-gssapi-dir=DIR], [look for gssapi libraries in DIR]),
+	AS_HELP_STRING([--with-gssapi-dir=DIR],[look for gssapi libraries in DIR]),
 	[
 	    GSSAPI_INCLUDES="-I$withval/include"
 	    GSSAPI_LDFLAGS="-L$withval/`basename $libdir`"
@@ -429,7 +430,7 @@ AC_ARG_WITH(
 
 AC_ARG_WITH(
 	gssapi-libdir,
-	AC_HELP_STRING([--with-gssapi-libdir=DIR], [look for gssapi libraries in DIR]),
+	AS_HELP_STRING([--with-gssapi-libdir=DIR],[look for gssapi libraries in DIR]),
 	[
 	    GSSAPI_LDFLAGS="-L$withval"
 	],
@@ -454,7 +455,7 @@ LDFLAGS="$tmp_LDFLAGS"
 
 AC_ARG_WITH(
 	schannel-dir,
-	AC_HELP_STRING([--with-schannel-dir=DIR], [look for libschannel in DIR]),
+	AS_HELP_STRING([--with-schannel-dir=DIR],[look for libschannel in DIR]),
 	[
 	    SCHANNEL_INCLUDES="-I$withval/include"
 	    SCHANNEL_LDFLAGS="-L$withval/`basename $libdir`"
@@ -463,7 +464,7 @@ AC_ARG_WITH(
 
 AC_ARG_WITH(
 	schannel-libdir,
-	AC_HELP_STRING([--with-schannel-libdir=DIR], [look for libschannel libraries in DIR]),
+	AS_HELP_STRING([--with-schannel-libdir=DIR],[look for libschannel libraries in DIR]),
 	[
 	    SCHANNEL_LDFLAGS="-L$withval"
 	],
@@ -646,8 +647,8 @@ AS_AC_EXPAND(SBINDIR, ["${sbindir}"])
 AC_CHECK_FUNCS(setpgrp)
 if test "$ac_cv_func_setpgrp" = "yes"; then
 	AC_CACHE_CHECK(whether setpgrp() takes 2 arguments, rpcd_cv_setpgrp_args, [
-		AC_TRY_COMPILE([#include <unistd.h>], [setpgrp(0, 0);], [rpcd_cv_setpgrp_args=2], [rpcd_cv_setpgrp_args=0])])
-	AC_DEFINE_UNQUOTED(SETPGRP_ARGS, $rpcd_cv_setpgrp_args, Number of arguments to setgrp())
+		AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <unistd.h>]], [[setpgrp(0, 0);]])],[rpcd_cv_setpgrp_args=2],[rpcd_cv_setpgrp_args=0])])
+        AC_DEFINE_UNQUOTED(SETPGRP_ARGS, $rpcd_cv_setpgrp_args, Number of arguments to setpgrp())
 fi
 
 #####################################################################
@@ -678,9 +679,7 @@ fi
 AC_SUBST(LIB_moonunit)
 AM_CONDITIONAL(HAVE_MOONUNIT, $HAVE_MOONUNIT)
 
-AC_OUTPUT(
-Makefile
-dnl freedce.spec
+AC_CONFIG_FILES([Makefile
 compat/Makefile
 libdcethread/Makefile
 uuid/Makefile
@@ -736,4 +735,5 @@ demos/samr_test/Makefile
 demos/access/Makefile
 perf/Makefile
 tools/Makefile
-)
+])
+AC_OUTPUT
