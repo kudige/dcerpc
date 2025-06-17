@@ -99,6 +99,7 @@
 #include <errors.h>
 #include <nametbl.h>
 #include <namtbpvt.h>
+#include <bsd/string.h>
 
 /********************************************************************/
 /*                                                                  */
@@ -433,6 +434,9 @@ void NAMETABLE_delete_node
  *                   stored identifier.
  *
  */
+
+size_t strlcpy(char *dst, const char *src, size_t size);
+size_t strlcat(char *dst, const char *src, size_t size);
 
 NAMETABLE_id_t NAMETABLE_add_id
 (

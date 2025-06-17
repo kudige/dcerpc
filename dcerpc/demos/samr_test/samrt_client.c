@@ -27,6 +27,7 @@
 #define MAX_USER_INPUT 128
 #define MAX_LINE 128
 
+extern int getopt(int argc, char *argv[], const char *optstring);
 /*
  * Forward declarations
  */

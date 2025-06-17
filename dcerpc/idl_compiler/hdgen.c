@@ -281,7 +281,7 @@ static void CPPQUOTES_exports
 )
 {
     const char* str;
-    for (; cpps; cpps = cpps->next) {
+    for (; cpps; cpps = (AST_cpp_quote_n_t *)cpps->next) {
                 STRTAB_str_to_string(cpps->text, &str);
                 str = unescape_string(str);
                 fprintf(fid, "\n%s\n", str);

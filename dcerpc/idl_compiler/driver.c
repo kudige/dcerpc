@@ -524,10 +524,10 @@ boolean DRIVER_main
      * Establish a handler such that we always try to output the
      * error messages, even when the compiler has an internal error.
      */
-    signal(SIGBUS, (void (*)(void))attempt_to_print_errors);
-    signal(SIGSEGV, (void (*)(void))attempt_to_print_errors);
-    signal(SIGFPE, (void (*)(void))attempt_to_print_errors);
-    signal(SIGILL, (void (*)(void))attempt_to_print_errors);
+    signal(SIGBUS, (void (*)(int))attempt_to_print_errors);
+    signal(SIGSEGV, (void (*)(int))attempt_to_print_errors);
+    signal(SIGFPE, (void (*)(int))attempt_to_print_errors);
+    signal(SIGILL, (void (*)(int))attempt_to_print_errors);
 
     /*
      * This point is established for orderly termination of the compilation.

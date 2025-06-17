@@ -102,6 +102,8 @@
 #include <ast.h>
 #include <astp.h>
 #include <frontend.h>
+#define __USE_XOPEN2K8
+#include <string.h>
 
 #define YYDEBUG 1
 

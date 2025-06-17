@@ -116,6 +116,7 @@
 #include <getflags.h>
 #include <propagat.h>
 #include <message.h>
+#include <bsd/string.h>
 
 #define CONFIG_SUFFIX ".acf"
 
@@ -184,6 +185,9 @@ static void FE_init(void)
 **  The cpp_output argument is a file ID for the output from cpp.
 **      UNIX only:      cpp_output is connected to piped output from cpp.
 */
+
+size_t strlcpy(char *dst, const char *src, size_t size);
+size_t strlcat(char *dst, const char *src, size_t size);
 
 #if defined(CPP)
 static void cpp

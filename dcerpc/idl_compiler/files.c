@@ -94,6 +94,7 @@
 
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <bsd/string.h>
 
 #include <nidl.h>
 #include <files.h>

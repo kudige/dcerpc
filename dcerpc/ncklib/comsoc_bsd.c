@@ -1026,7 +1026,7 @@ recvfrom_again:
     RPC_LOG_SOCKET_RECVFROM_NTR;
 
     ret = dcethread_recvfrom(lrpc->fd, buf, len, 0 /* flags */,
-                    &from->sa, &from->len);
+                    (struct sockaddr *)&from->sa, &from->len);
     if (ret == (size_t) -1)
     {
         serr = errno;

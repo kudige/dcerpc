@@ -86,6 +86,9 @@ int main(int argc, char *argv[])
    * Process the cmd line args
    */
 
+  extern int getopt(int argc, char *argv[],
+		                    const char *optstring);
+
   while ((c = getopt(argc, argv, "h:utvi:f:s:")) != EOF)
   {
       switch (c)
